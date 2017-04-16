@@ -30,10 +30,10 @@ public class VectorTest {
         Vector<S<Z>, String> vector = cons("1", nil());
         S<Z> size = size(vector);
 
-        assertEquals("1", vector.head(sameType()));
+        assertEquals("1", head(vector, sameType()));
         assertEquals("1", last(vector, sameType()));
 
-        Vector<Z, String> tail = vector.tail(sameType());
+        Vector<Z, String> tail = tail(vector, sameType());
         Vector<Z, String> init = init(vector, sameType());
 
         Fin<S<Z>> zero = fz();
@@ -45,14 +45,14 @@ public class VectorTest {
         Vector<S<S<Z>>, String> vector = cons("1", cons("2", nil()));
         S<S<Z>> size = size(vector);
 
-        assertEquals("1", vector.head(sameType()));
+        assertEquals("1", head(vector, sameType()));
         assertEquals("2", last(vector, sameType()));
 
-        Vector<S<Z>, String> tail = vector.tail(sameType());
+        Vector<S<Z>, String> tail = tail(vector, sameType());
         Vector<S<Z>, String> init = init(vector, sameType());
 
-        assertEquals("2", tail.head(sameType()));
-        assertEquals("1", init.head(sameType()));
+        assertEquals("2", head(tail, sameType()));
+        assertEquals("1", head(init, sameType()));
 
         Fin<S<S<Z>>> zero = fz();
         Fin<S<S<Z>>> one = fs(fz());
@@ -63,5 +63,14 @@ public class VectorTest {
         Vector<S<S<Z>>, String> reverse = reverse(vector);
         assertEquals("2", index(reverse, zero));
         assertEquals("1", index(reverse, one));
+    }
+
+    @Test
+    public void testMap() {
+        Vector<S<S<Z>>, String> vector = cons("1", cons("2", nil()));
+
+        Vector<S<S<Z>>, Integer> result = map(vector, Integer::valueOf);
+        assertEquals(Integer.valueOf(1), index(result, fz()));
+        assertEquals(Integer.valueOf(2), index(result, fs(fz())));
     }
 }

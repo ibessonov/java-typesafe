@@ -28,7 +28,7 @@ public interface Num {
 
     interface NumMatcher<N extends Num, Result> {
         Result caseZ(Z n, SameType<N, Z> prf);
-        <Pred extends Num> Result caseS(S<Pred> n, SameType<S<Pred>, N> prf);
+        <P extends Num> Result caseS(S<P> n, SameType<S<P>, N> prf);
     }
 
     @SuppressWarnings("unchecked")
@@ -37,7 +37,7 @@ public interface Num {
         return (SameType) prf;
     }
 
-    static <Pred extends Num, Result> Result numError(SameType<S<Pred>, Z> prf) {
+    static <P extends Num, Result> Result numError(SameType<S<P>, Z> prf) {
         throw new AssertionError(prf);
     }
 }

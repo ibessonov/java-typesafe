@@ -8,21 +8,50 @@ import com.ibessonov.typesafe.num.fin.FZ;
 import com.ibessonov.typesafe.num.fin.Fin;
 import com.ibessonov.typesafe.num.fin.Fin.FinMatcher;
 import com.ibessonov.typesafe.sametype.SameType;
-import com.ibessonov.typesafe.vector.Vector.Cons;
-import com.ibessonov.typesafe.vector.Vector.Nil;
-import com.ibessonov.typesafe.vector.Vector.VectorMatcher;
+import com.ibessonov.typesafe.vector.Vector.*;
+
+import java.util.function.Function;
 
 import static com.ibessonov.typesafe.num.Num.*;
 import static com.ibessonov.typesafe.num.fin.Fin.finError;
 import static com.ibessonov.typesafe.num.fin.Fin.finSameType;
 import static com.ibessonov.typesafe.sametype.SameType.sameType;
-import static com.ibessonov.typesafe.vector.Vector.cons;
-import static com.ibessonov.typesafe.vector.Vector.vecSameType;
+import static com.ibessonov.typesafe.vector.Vector.*;
 
 /**
  * @author ibessonov
  */
 public class VectorUtil {
+
+    public static <N extends Num, T, P extends Num> T head(Vector<N, T> vector, SameType<S<P>, N> prf) {
+        return vector.match(new VectorMatcher<N, T, T>() {
+            @Override
+            public T caseNil(Nil<T> v, SameType<N, Z> prf2) {
+                return numError(prf.transitive(prf2));
+            }
+
+            @Override
+            public <P2 extends Num> T caseCons(Cons<P2, T> v, SameType<S<P2>, N> prf) {
+                return v.head();
+            }
+        });
+    }
+
+    public static <N extends Num, T, P extends Num> Vector<P, T> tail(Vector<N, T> vector, SameType<S<P>, N> prf) {
+        return vector.match(new VectorMatcher<N, T, Vector<P, T>>() {
+            @Override
+            public Vector<P, T> caseNil(Nil<T> v, SameType<N, Z> prf2) {
+                return numError(prf.transitive(prf2));
+            }
+
+            @Override
+            public <P2 extends Num> Vector<P, T> caseCons(Cons<P2, T> v, SameType<S<P2>, N> prf2) {
+                SameType<P, P2> prf3 = numSameType(prf.transitive(prf2.swap()));
+                SameType<Vector<P, T>, Vector<P2, T>> prf4 = vecSameType(prf3);
+                return prf4.toLeft(v.tail());
+            }
+        });
+    }
 
     public static <N extends Num, T> N size(Vector<N, T> vector) {
         return vector.match(new VectorMatcher<N, T, N>() {
@@ -124,8 +153,8 @@ public class VectorUtil {
                         return prf4.toRight(cons(prev, v.tail().match(new LastElemVM<>(v.head()))));
                     }
                 }
-                SameType<S<P>, S<P2>> prf3 = prf.transitive(prf2.swap());
-                SameType<Vector<P, T>, Vector<P2, T>> prf4 = vecSameType(numSameType(prf3));
+                SameType<P, P2> prf3 = numSameType(prf.transitive(prf2.swap()));
+                SameType<Vector<P, T>, Vector<P2, T>> prf4 = vecSameType(prf3);
                 return prf4.toLeft(v.tail().match(new LastElemVM<>(v.head())));
             }
         });
@@ -143,6 +172,22 @@ public class VectorUtil {
             public <P extends Num> Vector<N, T> caseCons(Cons<P, T> v, SameType<S<P>, N> prf) {
                 SameType<Vector<S<P>, T>, Vector<N, T>> prf2 = vecSameType(prf);
                 return prf2.toRight(cons(last(v, sameType()), reverse(init(v, sameType()))));
+            }
+        });
+    }
+
+    public static <N extends Num, T, U> Vector<N, U> map(Vector<N, T> vector, Function<T, U> mapping) {
+        return vector.match(new VectorMatcher<N, T, Vector<N, U>>() {
+            @Override
+            public Vector<N, U> caseNil(Nil<T> v, SameType<N, Z> prf) {
+                SameType<Vector<N, U>, Vector<Z, U>> prf2 = vecSameType(prf);
+                return prf2.toLeft(nil());
+            }
+
+            @Override
+            public <P extends Num> Vector<N, U> caseCons(Cons<P, T> v, SameType<S<P>, N> prf) {
+                SameType<Vector<S<P>, U>, Vector<N, U>> prf2 = vecSameType(prf);
+                return prf2.toRight(cons(mapping.apply(v.head()), map(v.tail(), mapping)));
             }
         });
     }
