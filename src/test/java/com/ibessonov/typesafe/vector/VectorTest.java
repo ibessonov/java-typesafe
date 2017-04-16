@@ -3,7 +3,6 @@ package com.ibessonov.typesafe.vector;
 import com.ibessonov.typesafe.num.S;
 import com.ibessonov.typesafe.num.Z;
 import com.ibessonov.typesafe.num.fin.Fin;
-import com.ibessonov.typesafe.vector.Vector.Nil;
 import org.junit.Test;
 
 import static com.ibessonov.typesafe.num.fin.Fin.fs;
