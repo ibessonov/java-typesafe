@@ -14,7 +14,7 @@ import static com.ibessonov.typesafe.sametype.SameType.sameType;
  */
 public interface Vector<N extends Num, T> {
 
-    static <T> Nil<T> nil() {
+    static <T> Vector<Z, T> nil() {
         return new Nil<>();
     }
 

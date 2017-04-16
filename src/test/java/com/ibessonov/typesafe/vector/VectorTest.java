@@ -22,7 +22,7 @@ public class VectorTest {
 
     @Test
     public void test0() {
-        Nil<String> vector = nil();
+        Vector<Z, String> vector = nil();
         Z size = size(vector);
     }
 
