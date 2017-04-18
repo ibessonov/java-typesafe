@@ -7,9 +7,9 @@ import java.util.function.Function;
  */
 public interface SameType<Left, Right> {
 
-    Left toLeft(Right r);
+    Right castFirst(Left l);
 
-    Right toRight(Left l);
+    Left castSecond(Right r);
 
     SameType<Right, Left> swap();
 

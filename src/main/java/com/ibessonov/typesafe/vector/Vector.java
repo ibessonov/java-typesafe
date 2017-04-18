@@ -1,33 +1,28 @@
 package com.ibessonov.typesafe.vector;
 
-import com.ibessonov.typesafe.num.Num;
-import com.ibessonov.typesafe.num.S;
-import com.ibessonov.typesafe.num.Z;
+import com.ibessonov.typesafe.nat.Nat;
+import com.ibessonov.typesafe.nat.S;
+import com.ibessonov.typesafe.nat.Z;
 import com.ibessonov.typesafe.sametype.SameType;
 
 /**
  * @author ibessonov
  */
-public interface Vector<N extends Num, T> {
+public interface Vector<N extends Nat<N>, T> {
 
     static <T> Vector<Z, T> nil() {
         return new Nil<>();
     }
 
-    static <T, N extends Num> Vector<S<N>, T> cons(T head, Vector<N, T> tail) {
+    static <T, N extends Nat<N>> Vector<S<N>, T> cons(T head, Vector<N, T> tail) {
         return new Cons<>(head, tail);
     }
 
     @SuppressWarnings("unchecked")
-    static <N extends Num, M extends Num, T>
+    static <N extends Nat<N>, M extends Nat<M>, T>
     SameType<Vector<N, T>, Vector<M, T>> vecSameType(SameType<N, M> eq) {
         return (SameType) eq;
     }
 
     <Result> Result match(VectorMatcher<N, T, Result> matcher);
-
-    interface VectorMatcher<N extends Num, T, Result> {
-        Result caseNil(Nil<T> v, SameType<N, Z> prf);
-        <P extends Num> Result caseCons(Cons<P, T> v, SameType<S<P>, N> prf);
-    }
 }

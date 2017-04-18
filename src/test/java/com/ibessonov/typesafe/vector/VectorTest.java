@@ -1,12 +1,13 @@
 package com.ibessonov.typesafe.vector;
 
-import com.ibessonov.typesafe.num.S;
-import com.ibessonov.typesafe.num.Z;
-import com.ibessonov.typesafe.num.fin.Fin;
+import com.ibessonov.typesafe.base.Pair;
+import com.ibessonov.typesafe.nat.S;
+import com.ibessonov.typesafe.nat.Z;
+import com.ibessonov.typesafe.nat.fin.Fin;
 import org.junit.Test;
 
-import static com.ibessonov.typesafe.num.fin.Fin.fs;
-import static com.ibessonov.typesafe.num.fin.Fin.fz;
+import static com.ibessonov.typesafe.nat.fin.Fin.fs;
+import static com.ibessonov.typesafe.nat.fin.Fin.fz;
 import static com.ibessonov.typesafe.sametype.SameType.sameType;
 import static com.ibessonov.typesafe.vector.Vector.cons;
 import static com.ibessonov.typesafe.vector.Vector.nil;
@@ -72,5 +73,22 @@ public class VectorTest {
         Vector<S<S<Z>>, Integer> result = map(vector, Integer::valueOf);
         assertEquals(Integer.valueOf(1), index(result, fz()));
         assertEquals(Integer.valueOf(2), index(result, fs(fz())));
+    }
+
+    @Test
+    public void testZip() {
+        Vector<S<S<Z>>, Integer> v1 = cons(1, cons(2, nil()));
+        Vector<S<S<Z>>, String>  v2 = cons("1", cons("2", nil()));
+
+        Vector<S<S<Z>>, Pair<Integer, String>> zip = zip(v1, v2, Pair::pair);
+
+        Pair<Integer, String> fst = index(zip, fz());
+        Pair<Integer, String> snd = index(zip, fs(fz()));
+
+        assertEquals(Integer.valueOf(1), fst.left);
+        assertEquals("1", fst.right);
+
+        assertEquals(Integer.valueOf(2), snd.left);
+        assertEquals("2", snd.right);
     }
 }

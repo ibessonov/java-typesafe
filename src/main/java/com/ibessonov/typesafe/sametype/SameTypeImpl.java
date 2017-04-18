@@ -10,12 +10,12 @@ class SameTypeImpl<T> implements SameType<T, T> {
     SameTypeImpl() {}
 
     @Override
-    public T toLeft(T r) {
+    public T castSecond(T r) {
         return r;
     }
 
     @Override
-    public T toRight(T l) {
+    public T castFirst(T l) {
         return l;
     }
 
