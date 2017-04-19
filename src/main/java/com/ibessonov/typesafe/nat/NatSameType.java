@@ -1,6 +1,5 @@
 package com.ibessonov.typesafe.nat;
 
-import com.ibessonov.typesafe.base.Bottom;
 import com.ibessonov.typesafe.base.Impossible;
 import com.ibessonov.typesafe.sametype.SameType;
 
@@ -15,7 +14,7 @@ public interface NatSameType {
         return (SameType) prf;
     }
 
-    static <P extends Nat<P>> Bottom zeroIsNotPositive(SameType<S<P>, Z> prf) {
+    static <P extends Nat<P>> Void zeroIsNotPositive(SameType<S<P>, Z> lie) {
         throw new Impossible();
     }
 }

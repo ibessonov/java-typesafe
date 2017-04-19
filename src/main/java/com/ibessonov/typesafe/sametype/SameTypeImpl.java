@@ -5,9 +5,7 @@ import java.util.function.Function;
 /**
  * @author ibessonov
  */
-class SameTypeImpl<T> implements SameType<T, T> {
-
-    SameTypeImpl() {}
+class SameTypeImpl<T> extends SameType<T, T> {
 
     @Override
     public T castSecond(T r) {
@@ -32,6 +30,9 @@ class SameTypeImpl<T> implements SameType<T, T> {
     @SuppressWarnings("unchecked")
     @Override
     public <Left, Right> SameType<Left, Right> reverse(Function<SameType<Left, Right>, SameType<T, T>> f) {
-        return (SameType) new SameTypeImpl<>();
+        return (SameType) this;
     }
+
+    @Override
+    void inheritanceProtection() {}
 }

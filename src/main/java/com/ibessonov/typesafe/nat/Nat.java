@@ -3,15 +3,20 @@ package com.ibessonov.typesafe.nat;
 /**
  * @author ibessonov
  */
-public interface Nat<N extends Nat<N>> {
+public abstract class Nat<N extends Nat<N>> {
 
-    static Z zero() {
+    public static Z zero() {
         return new Z();
     }
 
-    static <P extends Nat<P>> S<P> succ(P p) {
+    public static <P extends Nat<P>> S<P> succ(P p) {
         return new S<>(p);
     }
 
-    <Result> Result natMatch(NatMatcher<N, Result> matcher);
+    public abstract <Result> Result natMatch(NatMatcher<N, Result> matcher);
+
+    /**
+     * Package-protected method in abstract class guarantees that one cannot inherit this class outside the package
+     */
+    abstract void inheritanceProtection();
 }

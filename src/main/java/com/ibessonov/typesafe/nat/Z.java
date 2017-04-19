@@ -5,7 +5,7 @@ import static com.ibessonov.typesafe.sametype.SameType.sameType;
 /**
  * @author ibessonov
  */
-public class Z implements Nat<Z> {
+public final class Z extends Nat<Z> {
 
     Z() {}
 
@@ -13,4 +13,7 @@ public class Z implements Nat<Z> {
     public <Result> Result natMatch(NatMatcher<Z, Result> matcher) {
         return matcher.caseZ(sameType());
     }
+
+    @Override
+    void inheritanceProtection() {}
 }

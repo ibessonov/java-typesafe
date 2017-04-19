@@ -5,7 +5,7 @@ import static com.ibessonov.typesafe.sametype.SameType.sameType;
 /**
  * @author ibessonov
  */
-public class S<P extends Nat<P>> implements Nat<S<P>> {
+public final class S<P extends Nat<P>> extends Nat<S<P>> {
 
     private final P prev;
 
@@ -17,4 +17,7 @@ public class S<P extends Nat<P>> implements Nat<S<P>> {
     public <Result> Result natMatch(NatMatcher<S<P>, Result> matcher) {
         return matcher.caseS(prev, sameType());
     }
+
+    @Override
+    void inheritanceProtection() {}
 }

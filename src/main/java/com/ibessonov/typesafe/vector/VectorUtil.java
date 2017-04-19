@@ -122,9 +122,9 @@ public interface VectorUtil {
                 }
 
                 @Override
-                public <P2 extends Nat<P2>> Vector<N2, T> caseCons(T head, Vector<P2, T> tail, SameType<S<P2>, N2> prf3) {
-                    SameType<Vector<S<P2>, T>, Vector<N2, T>> prf4 = vecSameType(prf3);
-                    return prf4.castFirst(cons(prev, tail.match(new LastElemVM<>(head))));
+                public <P2 extends Nat<P2>> Vector<N2, T> caseCons(T head, Vector<P2, T> tail, SameType<S<P2>, N2> prf2) {
+                    SameType<Vector<S<P2>, T>, Vector<N2, T>> prf3 = vecSameType(prf2);
+                    return prf3.castFirst(cons(prev, tail.match(new LastElemVM<>(head))));
                 }
             }
             return tail.match(new LastElemVM<>(head));

@@ -5,6 +5,7 @@ import com.ibessonov.typesafe.dec.Dec;
 import com.ibessonov.typesafe.dec.DecMatcher;
 import com.ibessonov.typesafe.sametype.SameType;
 
+import static com.ibessonov.typesafe.base.Impossible.void_;
 import static com.ibessonov.typesafe.dec.Dec.no;
 import static com.ibessonov.typesafe.dec.Dec.yes;
 import static com.ibessonov.typesafe.nat.NatSameType.natSameType;
@@ -15,8 +16,8 @@ import static com.ibessonov.typesafe.nat.NatSameType.zeroIsNotPositive;
  */
 public interface NatUtil {
 
-    static <P extends Nat<P>, Result> Result natError(SameType<S<P>, Z> prf) {
-        return zeroIsNotPositive(prf).bottom();
+    static <P extends Nat<P>, Result> Result natError(SameType<S<P>, Z> lie) {
+        return void_(zeroIsNotPositive(lie));
     }
 
     static <N extends Nat<N>, M extends Nat<M>> Dec<SameType<N, M>> equal(N n, M m) {
