@@ -30,7 +30,7 @@ class SameTypeImpl<T> extends SameType<T, T> {
     @SuppressWarnings("unchecked")
     @Override
     public <Left, Right> SameType<Left, Right> reverse(Function<SameType<Left, Right>, SameType<T, T>> f) {
-        return (SameType) this;
+        return (SameType) this; // there's no other way to implement it 😞
     }
 
     @Override

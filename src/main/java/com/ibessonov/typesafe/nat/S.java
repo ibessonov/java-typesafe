@@ -3,6 +3,7 @@ package com.ibessonov.typesafe.nat;
 import static com.ibessonov.typesafe.sametype.SameType.sameType;
 
 /**
+ * Type that represents positive number
  * @author ibessonov
  */
 public final class S<P extends Nat<P>> extends Nat<S<P>> {
@@ -11,6 +12,11 @@ public final class S<P extends Nat<P>> extends Nat<S<P>> {
 
     S(P p) {
         prev = p;
+    }
+
+    @Override
+    public S<P> cast() {
+        return this;
     }
 
     @Override
